@@ -1,10 +1,4 @@
-*.class
-
-# Package Files #
-*.jar
-*.war
-*.ear
-
-# Eclipse files
-/bin
-.project
+# IntelliJ files
+.idea/
+out/
+game.iml
