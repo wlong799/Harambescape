@@ -1,0 +1,45 @@
+##############################
+# COMPSCI 308 Project 1
+# Game Design
+# Will Long (wpl5)
+##############################
+
+## GENRE ##
+2-D Scrolling Platformer (i.e. Super Mario Brothers)
+
+## NAME ##
+Harambescape
+
+## BACKGROUND ##
+It was just another normal day in the gorilla enclosure at the
+Cincinatti Zoo, when suddenly, a human child appeared...
+
+Playing as Harambe the gorilla, you must survive the perils of the zoo
+and escape the workers who are trying to kill you, in order to save the
+child and reunite him with his mother.
+
+This project is dedicated to Harambe (RIP 1999 - 2016).
+
+## GOAL ##
+Progress through the level, avoiding zoo workers with guns, and gaining
+upgrades through the power of passerby who take pictures of you and 
+increase your status as a meme. Reach the end of the level without dying
+and face the final boss (the mom) to win the game.
+
+## MECHANICS ##
+Game will behave similarly to other 2D scrolling platformer games. You
+must move forwards through the level, while avoiding workers trying to
+shoot you. You can stop the workers by throwing bananas at them. There
+will be passerby throughout the level. If you go near them, they will
+take a picture of you, giving you points for future upgrades (examples:
+speed, health restore, banana power). In the end, there will be a boss
+fight against the mom, and if you defeat her for being so careless, the
+child will be saved and you can escape the zoo.
+
+## LEVELS/MODES ##
+Main level is going through the zoo, which will have cops who shoot at
+you, and various platforms to jump on, similar to Mario. Boss fight 
+will just be against the mother at the end.
+
+There will be an upgrade screen as well, where you can use points you've 
+gained from becoming an iconic meme to increase your power.
