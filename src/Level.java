@@ -8,8 +8,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 
-class Game {
-    public static final String TITLE = "Example JavaFX";
+class Level {
+    public static final String TITLE = "Harambescape";
     public static final int KEY_INPUT_SPEED = 5;
     private static final double GROWTH_RATE = 1.1;
     private static final int BOUNCER_SPEED = 30;
@@ -22,22 +22,24 @@ class Game {
     private Rectangle myTopBlock;
     private Rectangle myBottomBlock;
 
+    private int[][] levelData = {{0,0,0,0,0,0,0,0},
+                                 {0,0,0,0,0,0,0,0},
+                                 {0,0,0,0,0,0,0,0},
+                                 {0,0,0,0,0,0,0,0},
+                                 {0,0,0,0,0,0,0,0},
+                                 {0,0,0,0,1,1,0,0},
+                                 {0,0,0,1,1,1,1,1},
+                                 {1,1,1,1,1,1,1,1}};
 
-    /**
-     * Returns name of the game.
-     */
     public String getTitle () {
         return TITLE;
     }
 
-    /**
-     * Create the game's scene
-     */
     public Scene init (int width, int height) {
         // create a scene graph to organize the scene
         Group root = new Group();
         // create a place to see the shapes
-        myScene = new Scene(root, width, height, Color.WHITE);
+        myScene = new Scene(root, width, height, Color.DEEPSKYBLUE);
         // make some shapes and set their properties
         Image image = new Image(getClass().getClassLoader().getResourceAsStream("duke.gif"));
         myBouncer = new ImageView(image);
@@ -56,9 +58,13 @@ class Game {
         myScene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
         myScene.setOnMouseClicked(e -> handleMouseInput(e.getX(), e.getY()));
         // Add platforms
-        root.getChildren().add(new Platform(0,0));
-        root.getChildren().add(new Platform(100,0));
-        root.getChildren().add(new Platform(0,100));
+        for (int y = 0; y < levelData.length; y++) {
+            for (int x = 0; x < levelData[0].length; x++) {
+                if (levelData[y][x] == 1) {
+                    root.getChildren().add(new Platform(x*50, y*50));
+                }
+            }
+        }
         return myScene;
     }
 

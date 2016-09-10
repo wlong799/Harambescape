@@ -11,19 +11,19 @@ public class Main extends Application {
     private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
-    private Game myGame;
+    private Level level;
 
     @Override
     public void start (Stage stage) {
-        myGame = new Game();
-        stage.setTitle(myGame.getTitle());
+        level = new Level();
+        stage.setTitle(level.getTitle());
 
-        Scene scene = myGame.init(SIZE, SIZE);
+        Scene scene = level.init(SIZE, SIZE);
         stage.setScene(scene);
         stage.show();
 
         KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
-                                      e -> myGame.step(SECOND_DELAY));
+                                      e -> level.step(SECOND_DELAY));
         Timeline animation = new Timeline();
         animation.setCycleCount(Timeline.INDEFINITE);
         animation.getKeyFrames().add(frame);
