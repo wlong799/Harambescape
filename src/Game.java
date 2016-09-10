@@ -55,6 +55,10 @@ class Game {
         // respond to input
         myScene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
         myScene.setOnMouseClicked(e -> handleMouseInput(e.getX(), e.getY()));
+        // Add platforms
+        root.getChildren().add(new Platform(0,0));
+        root.getChildren().add(new Platform(100,0));
+        root.getChildren().add(new Platform(0,100));
         return myScene;
     }
 
