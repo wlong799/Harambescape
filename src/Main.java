@@ -6,8 +6,9 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class Main extends Application {
-    public static final int SIZE = 400;
-    public static final int FRAMES_PER_SECOND = 60;
+    private static final int WIDTH = 800;
+    private static final int HEIGHT = 600;
+    private static final int FRAMES_PER_SECOND = 60;
     private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
@@ -15,11 +16,9 @@ public class Main extends Application {
 
     @Override
     public void start (Stage stage) {
-        level = new Level();
-        stage.setTitle(level.getTitle());
-
-        Scene scene = level.init(SIZE, SIZE);
-        stage.setScene(scene);
+        level = new Level(WIDTH, HEIGHT);
+        stage.setTitle("Harambescape");
+        stage.setScene(level.getScene());
         stage.show();
 
         KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
