@@ -8,16 +8,14 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 
-/**
- * Separate the game code from some of the boilerplate code.
- * 
- * @author Robert C. Duvall
- */
-class ExampleGame {
+class Game {
     public static final String TITLE = "Example JavaFX";
     public static final int KEY_INPUT_SPEED = 5;
     private static final double GROWTH_RATE = 1.1;
     private static final int BOUNCER_SPEED = 30;
+    int bouncerDir = 1;
+    double velocity = 0;
+    double accel = 0.1;
 
     private Scene myScene;
     private ImageView myBouncer;
@@ -68,7 +66,11 @@ class ExampleGame {
      */
     public void step (double elapsedTime) {
         // update attributes
-        myBouncer.setX(myBouncer.getX() + BOUNCER_SPEED * elapsedTime);
+        if (myBouncer.getBoundsInParent().getMaxX() > myScene.getWidth() ||
+                myBouncer.getBoundsInParent().getMinX() < 0) {
+            bouncerDir *= -1;
+        }
+        myBouncer.setX(myBouncer.getX() + BOUNCER_SPEED * elapsedTime * bouncerDir);
         myTopBlock.setRotate(myBottomBlock.getRotate() - 1);
         myBottomBlock.setRotate(myBottomBlock.getRotate() + 1);
         
@@ -83,11 +85,18 @@ class ExampleGame {
         }
         // with images can only check bounding box
         if (myBottomBlock.getBoundsInParent().intersects(myBouncer.getBoundsInParent())) {
-            myBottomBlock.setFill(Color.BURLYWOOD);
+            myBottomBlock.setFill(Color.YELLOW);
         }
         else {
             myBottomBlock.setFill(Color.BISQUE);
         }
+        if (velocity < 10) {
+            velocity += accel;
+        }
+        if (myBottomBlock.getBoundsInParent().getMaxY() > myScene.getHeight()) {
+            velocity = 0;
+        }
+        myBottomBlock.setY(myBottomBlock.getY() + velocity);
     }
 
 
