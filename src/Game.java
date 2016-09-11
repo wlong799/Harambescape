@@ -3,11 +3,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Scanner;
 
 class Game {
     private Scene scene;
@@ -56,10 +52,12 @@ class Game {
         } else {
             if (pressedKeys.contains(KeyCode.D) && !pressedKeys.contains(KeyCode.A)) {
                 harambe.moveRight();
-            }
-            if (pressedKeys.contains(KeyCode.A) && !pressedKeys.contains(KeyCode.D)) {
+            } else if (pressedKeys.contains(KeyCode.A) && !pressedKeys.contains(KeyCode.D)) {
                 harambe.moveLeft();
+            } else {
+                harambe.stall();
             }
+
             if (pressedKeys.contains(KeyCode.W)) {
                 harambe.jump();
             }
@@ -67,6 +65,8 @@ class Game {
                 harambe.throwBanana();
             }
         }
+
+        harambe.updateMovement(currentLevel);
 
     }
 }
