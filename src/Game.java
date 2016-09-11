@@ -45,9 +45,16 @@ class Game {
         if (pressedKeys.contains(KeyCode.CONTROL)) {
             if (pressedKeys.contains(KeyCode.D)) {
                 sceneRoot.setLayoutX(sceneRoot.getLayoutX() - 10);
+                double minLayout = -1 * currentLevel.getLevelWidth() + sceneWidth;
+                if (sceneRoot.getLayoutX() < minLayout) {
+                    sceneRoot.setLayoutX(minLayout);
+                }
             }
             if (pressedKeys.contains(KeyCode.A)) {
                 sceneRoot.setLayoutX(sceneRoot.getLayoutX() + 10);
+                if (sceneRoot.getLayoutX() > 0) {
+                    sceneRoot.setLayoutX(0);
+                }
             }
         } else {
             if (pressedKeys.contains(KeyCode.D) && !pressedKeys.contains(KeyCode.A)) {
@@ -67,6 +74,10 @@ class Game {
         }
 
         harambe.updateMovement(currentLevel);
+        if (harambe.getX() > 250) {
+
+            sceneRoot.setLayoutX(-1*harambe.getX()+250);
+        }
 
     }
 }
