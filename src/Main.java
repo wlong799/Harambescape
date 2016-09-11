@@ -11,17 +11,17 @@ public class Main extends Application {
     private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
-    private LevelManager levelManager;
+    private Game game;
 
     @Override
     public void start (Stage stage) {
-        levelManager = new LevelManager(WIDTH, HEIGHT);
+        game = new Game(WIDTH, HEIGHT);
         stage.setTitle("Harambescape");
-        stage.setScene(levelManager.getScene());
+        stage.setScene(game.getScene());
         stage.show();
 
         KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
-                                      e -> levelManager.update(SECOND_DELAY));
+                                      e -> game.update(SECOND_DELAY));
         Timeline animation = new Timeline();
         animation.setCycleCount(Timeline.INDEFINITE);
         animation.getKeyFrames().add(frame);

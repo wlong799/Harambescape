@@ -4,33 +4,32 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Scanner;
 
-class LevelManager {
+class Game {
     private Scene scene;
     private Group sceneRoot;
     private int sceneWidth, sceneHeight;
 
-    private int currentLevel;
-    private int levelWidth, levelHeight;
-
+    private Level currentLevel;
     private Harambe harambe;
 
     private HashSet<KeyCode> pressedKeys;
 
-    LevelManager(int width, int height) {
+    Game(int width, int height) {
         sceneWidth = width;
         sceneHeight = height;
-
         sceneRoot = new Group();
         scene = new Scene(sceneRoot, sceneWidth, sceneHeight);
 
-        currentLevel = 1;
-        loadLevel();
-
+        currentLevel = new Level(1, sceneHeight);
         Image bgImage = new Image(getClass().getClassLoader().getResourceAsStream("images/city.png"));
-        sceneRoot.getChildren().add(0, new Background(bgImage, sceneWidth, sceneHeight));
+        sceneRoot.getChildren().add(new Background(bgImage, currentLevel.getLevelWidth(),
+                                                            currentLevel.getLevelHeight()));
+        sceneRoot.getChildren().add(currentLevel);
 
         harambe = new Harambe(0,0);
         sceneRoot.getChildren().add(harambe);
@@ -40,22 +39,7 @@ class LevelManager {
         scene.setOnKeyReleased(e -> pressedKeys.remove(e.getCode()));
     }
 
-    private void loadLevel() {
-        String filename = "levels/level" + currentLevel + ".txt";
-        InputStream stream = getClass().getClassLoader().getResourceAsStream(filename);
-        Scanner input = new Scanner(stream);
 
-        levelWidth = input.nextInt();
-        levelHeight = input.nextInt();
-        int blockSize = sceneHeight /levelHeight;
-        for (int y = 0; y < levelHeight; y++) {
-            for (int x = 0; x < levelWidth; x++) {
-                if (input.nextInt() == 1) {
-                    sceneRoot.getChildren().add(new Platform(x*blockSize, y*blockSize, blockSize));
-                }
-            }
-        }
-    }
 
     Scene getScene() {
         return scene;
