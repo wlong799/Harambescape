@@ -3,7 +3,7 @@ import javafx.scene.shape.Rectangle;
 
 class Platform extends Rectangle {
     Platform(double x, double y, double size) {
-        super(x, y, size, size);
+        super(3*x, y, 3*size, size);
         setFill(Color.GREEN);
     }
 }

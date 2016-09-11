@@ -21,7 +21,7 @@ public class Main extends Application {
         stage.show();
 
         KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
-                                      e -> levelManager.step(SECOND_DELAY));
+                                      e -> levelManager.update(SECOND_DELAY));
         Timeline animation = new Timeline();
         animation.setCycleCount(Timeline.INDEFINITE);
         animation.getKeyFrames().add(frame);
