@@ -2,10 +2,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 class Platform extends Rectangle {
-    private static final double SIZE = 50;
-
-    Platform(double x, double y) {
-        super(x, y, SIZE, SIZE);
+    Platform(double x, double y, double size) {
+        super(x, y, size, size);
         setFill(Color.GREEN);
     }
 }

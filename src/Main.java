@@ -1,28 +1,27 @@
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class Main extends Application {
-    private static final int WIDTH = 800;
+    private static final int WIDTH = 900;
     private static final int HEIGHT = 600;
     private static final int FRAMES_PER_SECOND = 60;
     private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
-    private Level level;
+    private LevelManager levelManager;
 
     @Override
     public void start (Stage stage) {
-        level = new Level(WIDTH, HEIGHT);
+        levelManager = new LevelManager(WIDTH, HEIGHT);
         stage.setTitle("Harambescape");
-        stage.setScene(level.getScene());
+        stage.setScene(levelManager.getScene());
         stage.show();
 
         KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
-                                      e -> level.step(SECOND_DELAY));
+                                      e -> levelManager.step(SECOND_DELAY));
         Timeline animation = new Timeline();
         animation.setCycleCount(Timeline.INDEFINITE);
         animation.getKeyFrames().add(frame);
