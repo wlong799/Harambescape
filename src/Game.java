@@ -45,7 +45,7 @@ class Game {
         return scene;
     }
 
-    public void update (double elapsedTime) {
+    public void update(double elapsedTime) {
         if (pressedKeys.contains(KeyCode.CONTROL)) {
             if (pressedKeys.contains(KeyCode.D)) {
                 sceneRoot.setLayoutX(sceneRoot.getLayoutX() - 10);
