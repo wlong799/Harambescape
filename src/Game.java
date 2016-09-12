@@ -71,10 +71,20 @@ class Game {
             return;
         }
         for (Police police : currentLevel.getPoliceList()) {
+            if (Math.abs(police.getX() - harambe.getX()) < sceneWidth / 2) {
+                if (police.getX() < harambe.getX()) {
+                    police.shootRight(currentLevel);
+                } else if (police.getX() > harambe.getX()) {
+                    police.shootLeft(currentLevel);
+                }
+            }
             police.update(currentLevel, elapsedTime);
         }
         for (Banana banana : currentLevel.getBananaList()) {
             banana.update(currentLevel, elapsedTime);
+        }
+        for (Bullet bullet : currentLevel.getBulletList()) {
+            bullet.update(currentLevel, elapsedTime);
         }
     }
 

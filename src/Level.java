@@ -19,6 +19,7 @@ public class Level extends Group {
     private List<Platform> platformList;
     private List<Police> policeList;
     private List<Banana> bananaList;
+    private List<Bullet> bulletList;
 
     Level(int levelNum, double height) {
         levelNumber = levelNum;
@@ -29,6 +30,7 @@ public class Level extends Group {
         platformList = new ArrayList<Platform>();
         policeList = new ArrayList<Police>();
         bananaList = new ArrayList<Banana>();
+        bulletList = new ArrayList<Bullet>();
 
         int levelBlockWidth = input.nextInt();
         int levelBlockHeight = input.nextInt();
@@ -79,5 +81,5 @@ public class Level extends Group {
 
     List<Banana> getBananaList() { return bananaList; }
 
-
+    List<Bullet> getBulletList() { return bulletList; }
 }
