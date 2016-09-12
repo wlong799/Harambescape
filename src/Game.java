@@ -131,6 +131,32 @@ class Game {
             harambe.setX(harambe.getX() - 100);
             harambe.setY(0);
         }
+        if (pressedKeys.contains(KeyCode.K)) {
+            currentLevel.getChildren().removeAll(currentLevel.getPoliceList());
+            currentLevel.getPoliceList().clear();
+        }
+        if (pressedKeys.contains(KeyCode.S)) {
+            Bullet.slowBulletSpeed();
+        }
+        if (pressedKeys.contains(KeyCode.I)) {
+            harambe.setInvincible();
+        }
+        if (pressedKeys.contains(KeyCode.B)) {
+            harambe.fastBananaReload();
+        }
+        if (pressedKeys.contains(KeyCode.F)) {
+            harambe.superSpeed();
+        }
+        if (pressedKeys.contains(KeyCode.J)) {
+            harambe.superJump();
+        }
+        if (pressedKeys.contains(KeyCode.C)) {
+            Harambe newHarambe = new Harambe(harambe.getX(), harambe.getY());
+            sceneRoot.getChildren().remove(harambe);
+            harambe = newHarambe;
+            sceneRoot.getChildren().add(harambe);
+            Bullet.normalBulletSpeed();
+        }
         for (KeyCode kc : pressedKeys) {
             if (kc.isDigitKey()) {
                 int level = Integer.parseInt(kc.getName());

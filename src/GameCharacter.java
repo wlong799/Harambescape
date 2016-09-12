@@ -3,12 +3,13 @@ import javafx.scene.image.ImageView;
 
 class GameCharacter extends ImageView {
     protected static final double DEFAULT_SPEED = 300;
-    protected static final double JUMP_HEIGHT = 700;
+    protected static final double DEFAULT_JUMP = 700;
     protected static final double FALL_ACCEL = 2000;
 
     protected double imageSize;
     protected boolean isMovingRight, isMovingLeft;
     protected boolean canJump;
+    protected double jumpHeight;
     protected double xSpeed;
     protected double yVelocity;
     protected double yAccel;
@@ -22,6 +23,7 @@ class GameCharacter extends ImageView {
         setFitHeight(imageSize);
         isAlive = true;
         xSpeed = DEFAULT_SPEED;
+        jumpHeight = DEFAULT_JUMP;
     }
 
     boolean isAlive() {
@@ -45,7 +47,7 @@ class GameCharacter extends ImageView {
 
     void jump() {
         if (canJump) {
-            yVelocity -= JUMP_HEIGHT;
+            yVelocity -= jumpHeight;
         }
         canJump = false;
     }
