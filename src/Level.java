@@ -11,10 +11,12 @@ public class Level extends Group {
     private static final int FREE_ID = 0;
     private static final int PLATFORM_ID = 1;
 
+    private int levelNumber;
     private double levelWidth, levelHeight;
 
-    Level(int levelNumber, double height) {
-        String filename = LEVEL_FILE_PREFIX + levelNumber + LEVEL_FILE_POSTFIX;
+    Level(int levelNum, double height) {
+        levelNumber = levelNum;
+        String filename = LEVEL_FILE_PREFIX + levelNum + LEVEL_FILE_POSTFIX;
         InputStream stream = getClass().getClassLoader().getResourceAsStream(filename);
         Scanner input = new Scanner(stream);
 
@@ -37,11 +39,15 @@ public class Level extends Group {
         }
     }
 
-    double getLevelHeight() {
+    double getHeight() {
         return levelHeight;
     }
 
-    double getLevelWidth() {
+    double getWidth() {
         return levelWidth;
+    }
+
+    int getLevelNumber() {
+        return levelNumber;
     }
 }

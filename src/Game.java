@@ -6,11 +6,15 @@ import javafx.scene.input.KeyCode;
 import java.util.HashSet;
 
 class Game {
+    private static final int NUM_LEVELS = 3;
+    private static final KeyCode CHEAT_KEY = KeyCode.CONTROL;
+
     private Scene scene;
     private Group sceneRoot;
     private int sceneWidth, sceneHeight;
 
     private Level currentLevel;
+    private Background background;
     private Harambe harambe;
 
     private HashSet<KeyCode> pressedKeys;
@@ -23,11 +27,10 @@ class Game {
 
         currentLevel = new Level(1, sceneHeight);
         Image bgImage = new Image(getClass().getClassLoader().getResourceAsStream("images/city.png"));
-        sceneRoot.getChildren().add(new Background(bgImage, currentLevel.getLevelWidth(),
-                                                            currentLevel.getLevelHeight()));
+        background = new Background(bgImage, currentLevel.getWidth(), currentLevel.getHeight());
+        harambe = new Harambe(0, 0);
+        sceneRoot.getChildren().add(background);
         sceneRoot.getChildren().add(currentLevel);
-
-        harambe = new Harambe(0,0);
         sceneRoot.getChildren().add(harambe);
 
         pressedKeys = new HashSet<KeyCode>();
@@ -35,50 +38,77 @@ class Game {
         scene.setOnKeyReleased(e -> pressedKeys.remove(e.getCode()));
     }
 
-
-
     Scene getScene() {
         return scene;
     }
 
     public void update(double elapsedTime) {
-        if (pressedKeys.contains(KeyCode.CONTROL)) {
-            if (pressedKeys.contains(KeyCode.D)) {
-                sceneRoot.setLayoutX(sceneRoot.getLayoutX() - 10);
-                double minLayout = -1 * currentLevel.getLevelWidth() + sceneWidth;
-                if (sceneRoot.getLayoutX() < minLayout) {
-                    sceneRoot.setLayoutX(minLayout);
-                }
-            }
-            if (pressedKeys.contains(KeyCode.A)) {
-                sceneRoot.setLayoutX(sceneRoot.getLayoutX() + 10);
-                if (sceneRoot.getLayoutX() > 0) {
-                    sceneRoot.setLayoutX(0);
-                }
-            }
-        } else {
-            if (pressedKeys.contains(KeyCode.D) && !pressedKeys.contains(KeyCode.A)) {
-                harambe.moveRight();
-            } else if (pressedKeys.contains(KeyCode.A) && !pressedKeys.contains(KeyCode.D)) {
-                harambe.moveLeft();
-            } else {
-                harambe.stall();
-            }
-
-            if (pressedKeys.contains(KeyCode.W)) {
-                harambe.jump();
-            }
-            if (pressedKeys.contains(KeyCode.SPACE)) {
-                harambe.throwBanana();
-            }
-        }
-
+        resolveKeyPresses();
         harambe.updateMovement(currentLevel);
-        if (harambe.getX() > 250) {
+        scrollLevel();
+        if (harambe.getX() + harambe.getWidth() >= currentLevel.getWidth()) {
+            nextLevel();
+        }
+    }
 
-            sceneRoot.setLayoutX(-1*harambe.getX()+250);
+    void resolveKeyPresses() {
+        if (pressedKeys.contains(CHEAT_KEY)) {
+            resolveCheatCode();
+            return;
         }
 
+        if (pressedKeys.contains(KeyCode.D) && !pressedKeys.contains(KeyCode.A)) {
+            harambe.moveRight();
+        } else if (pressedKeys.contains(KeyCode.A) && !pressedKeys.contains(KeyCode.D)) {
+            harambe.moveLeft();
+        } else {
+            harambe.stall();
+        }
+
+        if (pressedKeys.contains(KeyCode.W)) {
+            harambe.jump();
+        }
+        if (pressedKeys.contains(KeyCode.SPACE)) {
+            harambe.throwBanana();
+        }
+    }
+
+    void resolveCheatCode() {
+        if (pressedKeys.contains(KeyCode.D)) {
+            harambe.setX(harambe.getX() + 100);
+            harambe.setY(0);
+        }
+        if (pressedKeys.contains(KeyCode.A)) {
+            harambe.setX(harambe.getX() - 100);
+            harambe.setY(0);
+        }
+    }
+
+    void scrollLevel() {
+        double offset = sceneWidth * 1.0 / 3;
+        if (harambe.getX() < offset) {
+            return;
+        }
+        sceneRoot.setLayoutX(-1 * harambe.getX() + offset);
+        double minLayout = -1 * currentLevel.getWidth() + sceneWidth;
+        if (sceneRoot.getLayoutX() < minLayout) {
+            sceneRoot.setLayoutX(minLayout);
+        }
+    }
+
+    void nextLevel() {
+        sceneRoot.getChildren().clear();
+        harambe.setX(0);
+        harambe.setY(0);
+        int levelNum = currentLevel.getLevelNumber();
+        if (levelNum == NUM_LEVELS) {
+            System.exit(0);
+        }
+        currentLevel = new Level(levelNum + 1, sceneHeight);
+        sceneRoot.getChildren().add(background);
+        sceneRoot.getChildren().add(currentLevel);
+        sceneRoot.getChildren().add(harambe);
+        sceneRoot.setLayoutX(0);
     }
 }
 
