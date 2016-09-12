@@ -13,9 +13,11 @@ class Game {
     private Group sceneRoot;
     private int sceneWidth, sceneHeight;
 
-    private Level currentLevel;
-    private Background background;
     private Harambe harambe;
+    private Image bgImage;
+    private Background background;
+    private Level currentLevel;
+    boolean finishedGame;
 
     private HashSet<KeyCode> pressedKeys;
 
@@ -25,13 +27,11 @@ class Game {
         sceneRoot = new Group();
         scene = new Scene(sceneRoot, sceneWidth, sceneHeight);
 
-        currentLevel = new Level(1, sceneHeight);
-        Image bgImage = new Image(getClass().getClassLoader().getResourceAsStream("images/city.png"));
-        background = new Background(bgImage, currentLevel.getWidth(), currentLevel.getHeight());
-        harambe = new Harambe(0, 0);
-        sceneRoot.getChildren().add(background);
-        sceneRoot.getChildren().add(currentLevel);
-        sceneRoot.getChildren().add(harambe);
+        bgImage = new Image(getClass().getClassLoader().getResourceAsStream("images/city.png"));
+        StartScreen startScreen = new StartScreen(sceneWidth, sceneHeight, bgImage);
+        sceneRoot.getChildren().add(startScreen);
+
+        finishedGame = false;
 
         pressedKeys = new HashSet<KeyCode>();
         scene.setOnKeyPressed(e -> pressedKeys.add(e.getCode()));
@@ -43,11 +43,32 @@ class Game {
     }
 
     public void update(double elapsedTime) {
+        if (currentLevel == null) {
+            if (!finishedGame) {
+                resolveStartOptions();
+            } else {
+                resolveEndOptions();
+            }
+            return;
+        }
+
         resolveKeyPresses();
         harambe.updateMovement(currentLevel);
         scrollLevel();
         if (harambe.getX() + harambe.getWidth() >= currentLevel.getWidth()) {
-            nextLevel();
+            advanceLevels();
+        }
+    }
+
+    void resolveStartOptions() {
+        if (pressedKeys.contains(KeyCode.SPACE)) {
+            advanceLevels();
+        }
+    }
+
+    void resolveEndOptions() {
+        if (pressedKeys.contains(KeyCode.SPACE)) {
+            System.exit(0);
         }
     }
 
@@ -82,6 +103,13 @@ class Game {
             harambe.setX(harambe.getX() - 100);
             harambe.setY(0);
         }
+        for (KeyCode kc : pressedKeys) {
+            if (kc.isDigitKey()) {
+                int level = Integer.parseInt(kc.getName());
+                skipToLevel(level);
+                break;
+            }
+        }
     }
 
     void scrollLevel() {
@@ -96,19 +124,56 @@ class Game {
         }
     }
 
-    void nextLevel() {
+    void advanceLevels() {
         sceneRoot.getChildren().clear();
-        harambe.setX(0);
-        harambe.setY(0);
-        int levelNum = currentLevel.getLevelNumber();
-        if (levelNum == NUM_LEVELS) {
-            System.exit(0);
+
+        int levelNum = 0;
+        if (currentLevel != null) {
+            levelNum = currentLevel.getLevelNumber();
         }
+        if (levelNum == NUM_LEVELS) {
+            currentLevel = null;
+            finishedGame = true;
+            EndScreen endScreen = new EndScreen(sceneWidth, sceneHeight, bgImage);
+            sceneRoot.getChildren().add(endScreen);
+            return;
+        }
+
+        harambe = new Harambe(0, 0);
         currentLevel = new Level(levelNum + 1, sceneHeight);
+        background = new Background(bgImage, currentLevel.getWidth(), currentLevel.getHeight());
+
         sceneRoot.getChildren().add(background);
         sceneRoot.getChildren().add(currentLevel);
         sceneRoot.getChildren().add(harambe);
         sceneRoot.setLayoutX(0);
+    }
+
+    void skipToLevel(int levelNum) {
+        sceneRoot.getChildren().clear();
+
+        if (levelNum <= 0) {
+            StartScreen startScreen = new StartScreen(sceneWidth, sceneHeight, bgImage);
+            sceneRoot.getChildren().add(startScreen);
+            finishedGame = false;
+            currentLevel = null;
+            sceneRoot.setLayoutX(0);
+        } else if (levelNum > NUM_LEVELS) {
+            EndScreen endScreen = new EndScreen(sceneWidth, sceneHeight, bgImage);
+            sceneRoot.getChildren().add(endScreen);
+            finishedGame = true;
+            currentLevel = null;
+            sceneRoot.setLayoutX(0);
+        } else {
+            harambe = new Harambe(0, 0);
+            currentLevel = new Level(levelNum, sceneHeight);
+            background = new Background(bgImage, currentLevel.getWidth(), currentLevel.getHeight());
+
+            sceneRoot.getChildren().add(background);
+            sceneRoot.getChildren().add(currentLevel);
+            sceneRoot.getChildren().add(harambe);
+            sceneRoot.setLayoutX(0);
+        }
     }
 }
 
