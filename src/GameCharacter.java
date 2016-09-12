@@ -2,24 +2,26 @@ import javafx.geometry.Bounds;
 import javafx.scene.image.ImageView;
 
 class GameCharacter extends ImageView {
-    protected static final double SPEED = 300;
+    protected static final double DEFAULT_SPEED = 300;
     protected static final double JUMP_HEIGHT = 700;
     protected static final double FALL_ACCEL = 2000;
 
     protected double imageSize;
     protected boolean isMovingRight, isMovingLeft;
     protected boolean canJump;
+    protected double xSpeed;
     protected double yVelocity;
     protected double yAccel;
     protected boolean isAlive;
 
     GameCharacter(double x, double y, double size) {
-        isAlive = true;
         setX(x);
         setY(y);
         imageSize = size;
         setFitWidth(imageSize);
         setFitHeight(imageSize);
+        isAlive = true;
+        xSpeed = DEFAULT_SPEED;
     }
 
     boolean isAlive() {
@@ -56,10 +58,10 @@ class GameCharacter extends ImageView {
 
     void updateMovementX(Level level, double elapsedTime) {
         if (isMovingRight) {
-            setX(getX() + SPEED * elapsedTime);
+            setX(getX() + xSpeed * elapsedTime);
         }
         if (isMovingLeft) {
-            setX(getX() - SPEED * elapsedTime);
+            setX(getX() - xSpeed * elapsedTime);
         }
         for (Platform platform : level.getPlatformList()) {
             Bounds bounds = platform.getLayoutBounds();

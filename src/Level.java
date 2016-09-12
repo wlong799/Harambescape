@@ -18,6 +18,7 @@ public class Level extends Group {
     private double levelWidth, levelHeight;
     private List<Platform> platformList;
     private List<Police> policeList;
+    private List<Banana> bananaList;
 
     Level(int levelNum, double height) {
         levelNumber = levelNum;
@@ -27,12 +28,13 @@ public class Level extends Group {
 
         platformList = new ArrayList<Platform>();
         policeList = new ArrayList<Police>();
+        bananaList = new ArrayList<Banana>();
 
         int levelBlockWidth = input.nextInt();
         int levelBlockHeight = input.nextInt();
         levelHeight = height;
-        levelWidth = (double)(levelBlockWidth)/levelBlockHeight *
-                     levelHeight * PLATFORM_WIDTH_RATIO;
+        levelWidth = (double) (levelBlockWidth) / levelBlockHeight *
+                levelHeight * PLATFORM_WIDTH_RATIO;
         double blockHeight = levelHeight / levelBlockHeight;
         double blockWidth = blockHeight * PLATFORM_WIDTH_RATIO;
 
@@ -43,11 +45,11 @@ public class Level extends Group {
                     continue;
                 } else if (id == PLATFORM_ID) {
                     Platform platform = new Platform(x * blockWidth, y * blockHeight,
-                                                     blockWidth, blockHeight);
+                            blockWidth, blockHeight);
                     getChildren().add(platform);
                     platformList.add(platform);
                 } else if (id == POLICE_ID) {
-                    double xpos = (x * blockWidth) + blockWidth/2.0;
+                    double xpos = (x * blockWidth) + blockWidth / 2.0;
                     double ypos = y * blockHeight;
                     Police police = new Police(xpos, ypos);
                     getChildren().add(police);
@@ -73,7 +75,9 @@ public class Level extends Group {
         return platformList;
     }
 
-    List<Police> getPoliceList() {
-        return policeList;
-    }
+    List<Police> getPoliceList() { return policeList; }
+
+    List<Banana> getBananaList() { return bananaList; }
+
+
 }

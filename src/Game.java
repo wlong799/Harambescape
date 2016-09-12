@@ -3,7 +3,9 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 class Game {
     private static final int NUM_LEVELS = 3;
@@ -54,17 +56,26 @@ class Game {
             }
             return;
         }
-
         resolveKeyPresses();
-        harambe.update(currentLevel, elapsedTime);
-        for (Police police : currentLevel.getPoliceList()) {
-            police.update(currentLevel, elapsedTime);
-        }
+        updateGameCharacters(elapsedTime);
         scrollLevel();
         if (harambe.getX() + harambe.getFitWidth() >= currentLevel.getWidth()) {
             advanceLevels();
         }
         removeDeadCharacters();
+    }
+
+    void updateGameCharacters(double elapsedTime) {
+        harambe.update(currentLevel, elapsedTime);
+        if (currentLevel == null) {
+            return;
+        }
+        for (Police police : currentLevel.getPoliceList()) {
+            police.update(currentLevel, elapsedTime);
+        }
+        for (Banana banana : currentLevel.getBananaList()) {
+            banana.update(currentLevel, elapsedTime);
+        }
     }
 
     void resolveStartOptions() {
@@ -97,7 +108,7 @@ class Game {
             harambe.jump();
         }
         if (pressedKeys.contains(KeyCode.SPACE)) {
-            harambe.throwBanana();
+            harambe.throwBanana(currentLevel);
         }
     }
 
@@ -124,12 +135,18 @@ class Game {
             skipToLevel(0);
             return;
         }
+
+        if (currentLevel == null) {
+            return;
+        }
+        List<Police> deadPoliceList = new ArrayList<Police>();
         for (Police police : currentLevel.getPoliceList()) {
             if (!police.isAlive()) {
-                currentLevel.getPoliceList().remove(police);
-                currentLevel.getChildren().remove(police);
+                deadPoliceList.add(police);
             }
         }
+        currentLevel.getPoliceList().removeAll(deadPoliceList);
+        currentLevel.getChildren().removeAll(deadPoliceList);
     }
 
     void scrollLevel() {

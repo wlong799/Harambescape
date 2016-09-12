@@ -17,22 +17,22 @@ class Harambe extends GameCharacter {
         previousBananaThrowTime = 0;
     }
 
-    @Override
-    void updateAliveStatus(Level level) {
-        for (Police police : level.getPoliceList()) {
-            if (intersects(police.getLayoutBounds())) {
-                isAlive = false;
-            }
-        }
-    }
 
-    void throwBanana() {
+
+    void throwBanana(Level level) {
         long time = (new Date()).getTime();
         if (time - previousBananaThrowTime < BANANA_COOLDOWN_SECONDS * 1000) {
-            System.out.println("COOLDOWN");
-        } else {
-            previousBananaThrowTime = time;
-            System.out.println("THROW");
+            return;
         }
+        previousBananaThrowTime = time;
+        Banana banana = new Banana(getX(), getY());
+        level.getBananaList().add(banana);
+        level.getChildren().add(banana);
+        if (isMovingLeft) {
+            banana.moveLeft();
+        } else {
+            banana.moveRight();
+        }
+        banana.jump();
     }
 }

@@ -11,4 +11,13 @@ class Police extends GameCharacter {
         Image image = new Image(getClass().getClassLoader().getResourceAsStream(IMAGE_FILENAME));
         setImage(image);
     }
+
+    @Override
+    void updateAliveStatus(Level level) {
+        for (Banana banana : level.getBananaList()) {
+            if (intersects(banana.getLayoutBounds())) {
+                isAlive = false;
+            }
+        }
+    }
 }
