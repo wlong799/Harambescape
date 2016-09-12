@@ -53,7 +53,7 @@ class GameCharacter extends ImageView {
         if (isMovingLeft) {
             setX(getX() - SPEED);
         }
-        for (Node platform : level.getChildren()) {
+        for (Platform platform : level.getPlatformList()) {
             Bounds bounds = platform.getLayoutBounds();
             if (intersects(bounds)) {
                 if (isMovingRight) {
@@ -73,7 +73,7 @@ class GameCharacter extends ImageView {
         }
         yVelocity += yAccel;
         setY(getY() + yVelocity);
-        for (Node platform : level.getChildren()) {
+        for (Platform platform : level.getPlatformList()) {
             Bounds bounds = platform.getLayoutBounds();
             if (intersects(bounds)) {
                 setY(bounds.getMinY() - imageSize - 0.01);

@@ -57,6 +57,9 @@ class Game {
 
         resolveKeyPresses();
         harambe.updateMovement(currentLevel);
+        for (Police police : currentLevel.getPoliceList()) {
+            police.updateMovement(currentLevel);
+        }
         scrollLevel();
         if (harambe.getX() + harambe.getFitWidth() >= currentLevel.getWidth()) {
             advanceLevels();
