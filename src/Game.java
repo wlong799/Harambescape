@@ -20,6 +20,7 @@ class Game {
     private Image bgImage, startImage, endImage;
     private Background background;
     private StartScreen startScreen;
+    private EndScreen endScreen;
     private Level currentLevel;
     boolean finishedGame;
 
@@ -33,9 +34,10 @@ class Game {
 
         bgImage = new Image(getClass().getClassLoader().getResourceAsStream("images/city.png"));
         startImage = new Image(getClass().getClassLoader().getResourceAsStream("images/harambe-start.png"));
-        endImage = new Image(getClass().getClassLoader().getResourceAsStream("images/city.png"));
+        endImage = new Image(getClass().getClassLoader().getResourceAsStream("images/jungle.png"));
 
         startScreen = new StartScreen(sceneWidth, sceneHeight, startImage);
+        endScreen = new EndScreen(sceneWidth, sceneHeight, endImage);
         sceneRoot.getChildren().add(startScreen);
 
         finishedGame = false;
@@ -61,17 +63,17 @@ class Game {
         resolveKeyPresses();
         updateGameCharacters(elapsedTime);
         scrollLevel();
-        if (harambe.getX() + harambe.getFitWidth() >= currentLevel.getWidth()) {
+        if (currentLevel != null && harambe.getX() + harambe.getFitWidth() >= currentLevel.getWidth()) {
             advanceLevels();
         }
         removeDeadCharacters();
     }
 
     void updateGameCharacters(double elapsedTime) {
-        harambe.update(currentLevel, elapsedTime);
         if (currentLevel == null) {
             return;
         }
+        harambe.update(currentLevel, elapsedTime);
         for (Police police : currentLevel.getPoliceList()) {
             if (Math.abs(police.getX() - harambe.getX()) < sceneWidth / 2) {
                 if (police.getX() < harambe.getX()) {
@@ -213,7 +215,6 @@ class Game {
         if (levelNum == NUM_LEVELS) {
             currentLevel = null;
             finishedGame = true;
-            EndScreen endScreen = new EndScreen(sceneWidth, sceneHeight, endImage);
             sceneRoot.getChildren().add(endScreen);
             return;
         }
@@ -236,7 +237,6 @@ class Game {
             sceneRoot.getChildren().add(startScreen);
             finishedGame = false;
         } else if (levelNum > NUM_LEVELS) {
-            EndScreen endScreen = new EndScreen(sceneWidth, sceneHeight, endImage);
             sceneRoot.getChildren().add(endScreen);
             finishedGame = true;
         } else {
