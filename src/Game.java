@@ -3,6 +3,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -18,6 +19,7 @@ class Game {
     private Harambe harambe;
     private Image bgImage, startImage, endImage;
     private Background background;
+    private StartScreen startScreen;
     private Level currentLevel;
     boolean finishedGame;
 
@@ -30,10 +32,10 @@ class Game {
         scene = new Scene(sceneRoot, sceneWidth, sceneHeight);
 
         bgImage = new Image(getClass().getClassLoader().getResourceAsStream("images/city.png"));
-        startImage = new Image(getClass().getClassLoader().getResourceAsStream("images/city.png"));
+        startImage = new Image(getClass().getClassLoader().getResourceAsStream("images/harambe-start.png"));
         endImage = new Image(getClass().getClassLoader().getResourceAsStream("images/city.png"));
 
-        StartScreen startScreen = new StartScreen(sceneWidth, sceneHeight, startImage);
+        startScreen = new StartScreen(sceneWidth, sceneHeight, startImage);
         sceneRoot.getChildren().add(startScreen);
 
         finishedGame = false;
@@ -91,6 +93,9 @@ class Game {
     void resolveStartOptions() {
         if (pressedKeys.contains(KeyCode.SPACE)) {
             advanceLevels();
+        }
+        if (pressedKeys.contains(KeyCode.H)) {
+            startScreen.toggleHelp();
         }
     }
 
@@ -228,7 +233,6 @@ class Game {
         currentLevel = null;
 
         if (levelNum <= 0) {
-            StartScreen startScreen = new StartScreen(sceneWidth, sceneHeight, startImage);
             sceneRoot.getChildren().add(startScreen);
             finishedGame = false;
         } else if (levelNum > NUM_LEVELS) {
