@@ -4,23 +4,24 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 class GameCharacter extends ImageView {
-    protected static final double IMAGE_SIZE = 50;
     protected static final double SPEED = 5;
     protected static final double JUMP_HEIGHT = 20;
     protected static final double FALL_ACCEL = 0.2;
     protected static final double FALL_MAX = 2;
 
+    protected double imageSize;
     protected boolean isMovingRight, isMovingLeft;
     protected boolean canJump;
     protected double yVelocity;
     protected double yAccel;
 
-    GameCharacter(double x, double y, Image image) {
+    GameCharacter(double x, double y, double size, Image image) {
         super(image);
         setX(x);
         setY(y);
-        setFitWidth(IMAGE_SIZE);
-        setFitHeight(IMAGE_SIZE);
+        imageSize = size;
+        setFitWidth(size);
+        setFitHeight(size);
     }
 
     void moveRight() {
@@ -56,10 +57,10 @@ class GameCharacter extends ImageView {
             Bounds bounds = platform.getLayoutBounds();
             if (intersects(bounds)) {
                 if (isMovingRight) {
-                    setX(bounds.getMinX()-IMAGE_SIZE-0.01);
+                    setX(bounds.getMinX() - imageSize - 0.01);
                 }
                 if (isMovingLeft) {
-                    setX(bounds.getMaxX()+0.01);
+                    setX(bounds.getMaxX() + 0.01);
                 }
             }
         }
@@ -75,7 +76,7 @@ class GameCharacter extends ImageView {
         for (Node platform : level.getChildren()) {
             Bounds bounds = platform.getLayoutBounds();
             if (intersects(bounds)) {
-                setY(bounds.getMinY() - IMAGE_SIZE - 0.01);
+                setY(bounds.getMinY() - imageSize - 0.01);
                 canJump = true;
                 yVelocity = 0;
                 yAccel = 0;

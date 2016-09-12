@@ -14,7 +14,7 @@ class Game {
     private int sceneWidth, sceneHeight;
 
     private Harambe harambe;
-    private Image bgImage;
+    private Image bgImage, startImage, endImage;
     private Background background;
     private Level currentLevel;
     boolean finishedGame;
@@ -28,7 +28,10 @@ class Game {
         scene = new Scene(sceneRoot, sceneWidth, sceneHeight);
 
         bgImage = new Image(getClass().getClassLoader().getResourceAsStream("images/city.png"));
-        StartScreen startScreen = new StartScreen(sceneWidth, sceneHeight, bgImage);
+        startImage = new Image(getClass().getClassLoader().getResourceAsStream("images/city.png"));
+        endImage = new Image(getClass().getClassLoader().getResourceAsStream("images/city.png"));
+
+        StartScreen startScreen = new StartScreen(sceneWidth, sceneHeight, startImage);
         sceneRoot.getChildren().add(startScreen);
 
         finishedGame = false;
@@ -126,6 +129,7 @@ class Game {
 
     void advanceLevels() {
         sceneRoot.getChildren().clear();
+        sceneRoot.setLayoutX(0);
 
         int levelNum = 0;
         if (currentLevel != null) {
@@ -134,7 +138,7 @@ class Game {
         if (levelNum == NUM_LEVELS) {
             currentLevel = null;
             finishedGame = true;
-            EndScreen endScreen = new EndScreen(sceneWidth, sceneHeight, bgImage);
+            EndScreen endScreen = new EndScreen(sceneWidth, sceneHeight, endImage);
             sceneRoot.getChildren().add(endScreen);
             return;
         }
@@ -146,24 +150,21 @@ class Game {
         sceneRoot.getChildren().add(background);
         sceneRoot.getChildren().add(currentLevel);
         sceneRoot.getChildren().add(harambe);
-        sceneRoot.setLayoutX(0);
     }
 
     void skipToLevel(int levelNum) {
         sceneRoot.getChildren().clear();
+        sceneRoot.setLayoutX(0);
+        currentLevel = null;
 
         if (levelNum <= 0) {
-            StartScreen startScreen = new StartScreen(sceneWidth, sceneHeight, bgImage);
+            StartScreen startScreen = new StartScreen(sceneWidth, sceneHeight, startImage);
             sceneRoot.getChildren().add(startScreen);
             finishedGame = false;
-            currentLevel = null;
-            sceneRoot.setLayoutX(0);
         } else if (levelNum > NUM_LEVELS) {
-            EndScreen endScreen = new EndScreen(sceneWidth, sceneHeight, bgImage);
+            EndScreen endScreen = new EndScreen(sceneWidth, sceneHeight, endImage);
             sceneRoot.getChildren().add(endScreen);
             finishedGame = true;
-            currentLevel = null;
-            sceneRoot.setLayoutX(0);
         } else {
             harambe = new Harambe(0, 0);
             currentLevel = new Level(levelNum, sceneHeight);
@@ -172,7 +173,6 @@ class Game {
             sceneRoot.getChildren().add(background);
             sceneRoot.getChildren().add(currentLevel);
             sceneRoot.getChildren().add(harambe);
-            sceneRoot.setLayoutX(0);
         }
     }
 }
