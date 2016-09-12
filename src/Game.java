@@ -57,6 +57,7 @@ class Game {
                 resolveStartOptions();
             } else {
                 resolveEndOptions();
+                endScreen.update(elapsedTime);
             }
             return;
         }
@@ -104,6 +105,18 @@ class Game {
     void resolveEndOptions() {
         if (pressedKeys.contains(KeyCode.SPACE)) {
             System.exit(0);
+        }
+
+        if (pressedKeys.contains(KeyCode.D) && !pressedKeys.contains(KeyCode.A)) {
+            endScreen.getHarambe().moveRight();
+        } else if (pressedKeys.contains(KeyCode.A) && !pressedKeys.contains(KeyCode.D)) {
+            endScreen.getHarambe().moveLeft();
+        } else {
+            endScreen.getHarambe().stall();
+        }
+
+        if (pressedKeys.contains(KeyCode.W)) {
+            endScreen.getHarambe().jump();
         }
     }
 
