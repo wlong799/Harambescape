@@ -15,7 +15,6 @@ class Game {
 
     private Harambe harambe;
     private Image bgImage;
-    private Image harambeImage;
     private Background background;
     private Level currentLevel;
     boolean finishedGame;
@@ -29,7 +28,6 @@ class Game {
         scene = new Scene(sceneRoot, sceneWidth, sceneHeight);
 
         bgImage = new Image(getClass().getClassLoader().getResourceAsStream("images/city.png"));
-        harambeImage = bgImage;
         StartScreen startScreen = new StartScreen(sceneWidth, sceneHeight, bgImage);
         sceneRoot.getChildren().add(startScreen);
 
@@ -141,7 +139,7 @@ class Game {
             return;
         }
 
-        harambe = new Harambe(0, 0, harambeImage);
+        harambe = new Harambe(0, 0);
         currentLevel = new Level(levelNum + 1, sceneHeight);
         background = new Background(bgImage, currentLevel.getWidth(), currentLevel.getHeight());
 
@@ -167,7 +165,7 @@ class Game {
             currentLevel = null;
             sceneRoot.setLayoutX(0);
         } else {
-            harambe = new Harambe(0, 0, harambeImage);
+            harambe = new Harambe(0, 0);
             currentLevel = new Level(levelNum, sceneHeight);
             background = new Background(bgImage, currentLevel.getWidth(), currentLevel.getHeight());
 

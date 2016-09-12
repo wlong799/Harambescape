@@ -1,13 +1,28 @@
 import javafx.scene.image.Image;
 
-class Harambe extends GameCharacter {
+import java.util.Date;
 
-    Harambe(double x, double y, Image image) {
-        super(x, y, image);
+class Harambe extends GameCharacter {
+    private static final String IMAGE_FILENAME = "images/gorilla.png";
+    private static final int BANANA_COOLDOWN_SECONDS = 2;
+
+    private long previousBananaThrowTime;
+
+
+    Harambe(double x, double y) {
+        super(x, y, null);
+        Image image = new Image(getClass().getClassLoader().getResourceAsStream(IMAGE_FILENAME));
+        setImage(image);
+        previousBananaThrowTime = 0;
     }
 
     void throwBanana() {
-        System.out.println("THROW");
-        return;
+        long time = (new Date()).getTime();
+        if (time - previousBananaThrowTime < BANANA_COOLDOWN_SECONDS * 1000) {
+            System.out.println("COOLDOWN");
+        } else {
+            previousBananaThrowTime = time;
+            System.out.println("THROW");
+        }
     }
 }

@@ -63,6 +63,9 @@ class GameCharacter extends ImageView {
                 }
             }
         }
+        if (getX() < 0) {
+            setX(0);
+        }
 
         if (yAccel < FALL_MAX) {
             yAccel += FALL_ACCEL;
