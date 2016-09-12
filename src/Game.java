@@ -56,14 +56,15 @@ class Game {
         }
 
         resolveKeyPresses();
-        harambe.updateMovement(currentLevel);
+        harambe.update(currentLevel, elapsedTime);
         for (Police police : currentLevel.getPoliceList()) {
-            police.updateMovement(currentLevel);
+            police.update(currentLevel, elapsedTime);
         }
         scrollLevel();
         if (harambe.getX() + harambe.getFitWidth() >= currentLevel.getWidth()) {
             advanceLevels();
         }
+        removeDeadCharacters();
     }
 
     void resolveStartOptions() {
@@ -114,6 +115,19 @@ class Game {
                 int level = Integer.parseInt(kc.getName());
                 skipToLevel(level);
                 break;
+            }
+        }
+    }
+
+    void removeDeadCharacters() {
+        if (!harambe.isAlive()) {
+            skipToLevel(0);
+            return;
+        }
+        for (Police police : currentLevel.getPoliceList()) {
+            if (!police.isAlive()) {
+                currentLevel.getPoliceList().remove(police);
+                currentLevel.getChildren().remove(police);
             }
         }
     }

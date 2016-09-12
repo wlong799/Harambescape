@@ -7,10 +7,8 @@ class Police extends GameCharacter {
     private static final double IMAGE_SIZE = 75;
 
     Police(double x, double y) {
-        super(x, y, IMAGE_SIZE, null);
+        super(x, y, IMAGE_SIZE);
         Image image = new Image(getClass().getClassLoader().getResourceAsStream(IMAGE_FILENAME));
         setImage(image);
-        setFitHeight(IMAGE_SIZE);
-        setFitWidth(IMAGE_SIZE);
     }
 }

@@ -1,27 +1,29 @@
 import javafx.geometry.Bounds;
-import javafx.scene.Node;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 class GameCharacter extends ImageView {
-    protected static final double SPEED = 5;
-    protected static final double JUMP_HEIGHT = 20;
-    protected static final double FALL_ACCEL = 0.2;
-    protected static final double FALL_MAX = 2;
+    protected static final double SPEED = 300;
+    protected static final double JUMP_HEIGHT = 700;
+    protected static final double FALL_ACCEL = 2000;
 
     protected double imageSize;
     protected boolean isMovingRight, isMovingLeft;
     protected boolean canJump;
     protected double yVelocity;
     protected double yAccel;
+    protected boolean isAlive;
 
-    GameCharacter(double x, double y, double size, Image image) {
-        super(image);
+    GameCharacter(double x, double y, double size) {
+        isAlive = true;
         setX(x);
         setY(y);
         imageSize = size;
-        setFitWidth(size);
-        setFitHeight(size);
+        setFitWidth(imageSize);
+        setFitHeight(imageSize);
+    }
+
+    boolean isAlive() {
+        return isAlive;
     }
 
     void moveRight() {
@@ -46,12 +48,18 @@ class GameCharacter extends ImageView {
         canJump = false;
     }
 
-    void updateMovement(Level level) {
+    void update(Level level, double elapsedTime) {
+        updateMovementX(level, elapsedTime);
+        updateMovementY(level, elapsedTime);
+        updateAliveStatus(level);
+    }
+
+    void updateMovementX(Level level, double elapsedTime) {
         if (isMovingRight) {
-            setX(getX() + SPEED);
+            setX(getX() + SPEED * elapsedTime);
         }
         if (isMovingLeft) {
-            setX(getX() - SPEED);
+            setX(getX() - SPEED * elapsedTime);
         }
         for (Platform platform : level.getPlatformList()) {
             Bounds bounds = platform.getLayoutBounds();
@@ -67,12 +75,11 @@ class GameCharacter extends ImageView {
         if (getX() < 0) {
             setX(0);
         }
+    }
 
-        if (yAccel < FALL_MAX) {
-            yAccel += FALL_ACCEL;
-        }
-        yVelocity += yAccel;
-        setY(getY() + yVelocity);
+    void updateMovementY(Level level, double elapsedTime) {
+        yVelocity += FALL_ACCEL * elapsedTime;
+        setY(getY() + yVelocity * elapsedTime);
         for (Platform platform : level.getPlatformList()) {
             Bounds bounds = platform.getLayoutBounds();
             if (intersects(bounds)) {
@@ -82,5 +89,9 @@ class GameCharacter extends ImageView {
                 yAccel = 0;
             }
         }
+    }
+
+    void updateAliveStatus(Level level) {
+        return;
     }
 }

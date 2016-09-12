@@ -11,12 +11,19 @@ class Harambe extends GameCharacter {
 
 
     Harambe(double x, double y) {
-        super(x, y, IMAGE_SIZE, null);
+        super(x, y, IMAGE_SIZE);
         Image image = new Image(getClass().getClassLoader().getResourceAsStream(IMAGE_FILENAME));
         setImage(image);
-        setFitHeight(IMAGE_SIZE);
-        setFitWidth(IMAGE_SIZE);
         previousBananaThrowTime = 0;
+    }
+
+    @Override
+    void updateAliveStatus(Level level) {
+        for (Police police : level.getPoliceList()) {
+            if (intersects(police.getLayoutBounds())) {
+                isAlive = false;
+            }
+        }
     }
 
     void throwBanana() {
