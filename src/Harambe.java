@@ -1,3 +1,14 @@
+// This entire file is part of my masterpiece.
+// Will Long
+//
+// I chose this file, in combination with the GameCharacter class, to show how
+// inheritance can be used. In this case, Harambe is a GameCharacter and has
+// many of the same properties. However, Harambe also has the ability to throw
+// bananas, has a specific image, has possible cheat codes, and can die to
+// certain situations. Taken together, these files show what I believe to be a
+// good use of object-oriented programming
+
+
 import javafx.scene.image.Image;
 
 import java.util.Date;

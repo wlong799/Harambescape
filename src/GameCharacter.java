@@ -1,10 +1,19 @@
+// This entire file is part of my masterpiece.
+// Will Long
+//
+// I chose this file because I felt it was a good example of using inheritance.
+// It sets some default methods that are necessary for all subclasses, and
+// provides a template that subclasses can extend upon. Furthermore, it protects
+// all instance variables so that only the classes that need them (i.e.
+// subclasses) will be able to access them/modify them.
+
 import javafx.geometry.Bounds;
 import javafx.scene.image.ImageView;
 
 /**
- * Super class for all characters existing in game. Can move right and left,
+ * Super-class for all characters existing in game. Can move right and left,
  * and can jump. Cannot move through platforms. Does not die to anything by
- * default.
+ * default, but this method will be overwritten by subclasses.
  * @author Will Long
  */
 class GameCharacter extends ImageView {
@@ -31,9 +40,11 @@ class GameCharacter extends ImageView {
     GameCharacter(double x, double y, double size) {
         setX(x);
         setY(y);
+
         imageSize = size;
         setFitWidth(imageSize);
         setFitHeight(imageSize);
+
         isAlive = true;
         xSpeed = DEFAULT_SPEED;
         jumpHeight = DEFAULT_JUMP;
@@ -68,7 +79,7 @@ class GameCharacter extends ImageView {
     }
 
     /**
-     * Sets character to jump if possible.
+     * Sets character to jump, if possible.
      */
     void jump() {
         if (canJump) {
@@ -89,7 +100,8 @@ class GameCharacter extends ImageView {
     }
 
     /**
-     * Updates character's X direction movement.
+     * Updates character's X direction movement based on current movement
+     * status. Prevents character from moving through platforms or offscreen.
      * @param level is Level to update information in.
      * @param elapsedTime is time spent updating.
      */
@@ -117,7 +129,10 @@ class GameCharacter extends ImageView {
     }
 
     /**
-     * Updates character's Y direction movement.
+     * Updates character's Y direction movement. If mid-air, y velocity is
+     * increased by the given fall acceleration variable. Prevents character
+     * from falling through platform. Once a player touches a platform, its
+     * y velocity is reset and its ability to jump is restored.
      * @param level is Level to update information in.
      * @param elapsedTime is time spent updating.
      */
@@ -137,7 +152,9 @@ class GameCharacter extends ImageView {
 
     /**
      * Updates whether player is still alive. This is used by Game to determine
-     * whether the character should be removed from screen.
+     * whether the character should be removed from screen. By default,
+     * GameCharacter cannot die. This may have been better to implement as an
+     * abstract method.
      * @param level is Level to update information in.
      */
     void updateAliveStatus(Level level) {
