@@ -2,6 +2,12 @@ import javafx.scene.image.Image;
 
 import java.util.Date;
 
+/**
+ * Main character of game, extension of GameCharacter. Harambe is a gorilla
+ * who can jump, can throw bananas, and dies upon contact with a policeman or
+ * his bullet.
+ * @author Will Long
+ */
 class Harambe extends GameCharacter {
     private static final String IMAGE_FILENAME = "images/gorilla.png";
     private static final double IMAGE_SIZE = 75;
@@ -10,6 +16,11 @@ class Harambe extends GameCharacter {
     private long previousBananaThrowTime;
     private boolean isInvincible;
 
+    /**
+     * Creates Harambe at specified location.
+     * @param x is x-location.
+     * @param y is y-location.
+     */
     Harambe(double x, double y) {
         super(x, y, IMAGE_SIZE);
         Image image = new Image(getClass().getClassLoader().getResourceAsStream(IMAGE_FILENAME));
@@ -34,6 +45,10 @@ class Harambe extends GameCharacter {
         jumpHeight = DEFAULT_JUMP * 2;
     }
 
+    /**
+     * Harambe dies if in contact with a bullet or a policeman.
+     * @param level is Level to update information in.
+     */
     @Override
     void updateAliveStatus(Level level) {
         if (isInvincible) {
@@ -50,7 +65,13 @@ class Harambe extends GameCharacter {
             }
         }
     }
-    
+
+    /**
+     * Lobs a banana in the same direction that Harambe is moving. Does not
+     * throw the banana if banana was thrown more recently than the cooldown
+     * time.
+     * @param level is the Level to update information on.
+     */
     void throwBanana(Level level) {
         long time = (new Date()).getTime();
         if (time - previousBananaThrowTime < bananaCooldownSeconds * 1000) {

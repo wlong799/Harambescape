@@ -8,6 +8,11 @@ import javafx.scene.text.TextAlignment;
 
 import java.util.Date;
 
+/**
+ * Start screen that is loaded when game is first started. Shows an image of
+ * Harambe with a child, and displays name, "Harambescape". Game information is
+ * shown, and help information can be toggled. Game is started with space.
+ */
 class StartScreen extends Group {
     private static final int BORDER_WIDTH = 325;
     private static final int TOP_PADDING = 175;
@@ -43,6 +48,13 @@ class StartScreen extends Group {
     boolean showingHelp;
     long lastTimeToggledMilli;
 
+    /**
+     * Initializes start screen with specified image, width, and height. Game
+     * information text is displayed.
+     * @param width is width of the screen.
+     * @param height is height of the screen.
+     * @param image is background image.
+     */
     StartScreen(int width, int height, Image image) {
         background = new ImageView(image);
         background.setFitHeight(height);
@@ -64,6 +76,9 @@ class StartScreen extends Group {
         getChildren().add(helpText);
     }
 
+    /**
+     * Toggles text between game description and help.
+     */
     void toggleHelp() {
         long time = (new Date()).getTime();
         if (time - lastTimeToggledMilli < TOGGLE_DELAY_SECONDS*1000) {

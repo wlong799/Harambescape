@@ -5,6 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Basic class for handling main levels of game. Loads the initial level info
+ * from a text file (platforms and police). Keeps track of all platforms and
+ * other characters currently active.
+ * @author Will Long
+ */
 public class Level extends Group {
     private static final String LEVEL_FILE_PREFIX = "levels/level";
     private static final String LEVEL_FILE_POSTFIX = ".txt";
@@ -21,6 +27,12 @@ public class Level extends Group {
     private List<Banana> bananaList;
     private List<Bullet> bulletList;
 
+    /**
+     * Load the specified level from file. Initialize lists of characters to
+     * keep track of. If levelNum is 1, then level1.txt holds level info.
+     * @param levelNum is level to load.
+     * @param height is height of the level.
+     */
     Level(int levelNum, double height) {
         levelNumber = levelNum;
         String filename = LEVEL_FILE_PREFIX + levelNum + LEVEL_FILE_POSTFIX;

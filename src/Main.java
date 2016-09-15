@@ -4,6 +4,12 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+/**
+ * Main class for Harambescape. Basic boilerplate code for launching the JavaFX
+ * game application. Game is launched through this file.
+ *
+ * @author Will Long
+ */
 public class Main extends Application {
     private static final int WIDTH = 1280;
     private static final int HEIGHT = 720;

@@ -1,6 +1,11 @@
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * Basic platform object for characters to move around on.
+ *
+ * @author Will Long
+ */
 class Platform extends Rectangle {
     private static Color PLATFORM_COLOR = Color.LIGHTGRAY;
 

@@ -10,6 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * End game mode to be played after beating main game. Harambe can move around
+ * screen and catch bananas to grow larger. Game ends whenever player decides
+ * to press space
+ * @author Will Long
+ */
 class EndScreen extends Group {
     private static final int BOTTOM_PADDING = 50;
 
@@ -25,6 +31,13 @@ class EndScreen extends Group {
 
     private Random random;
 
+    /**
+     * Initializes end game of specified size and background. Harambe is created
+     * and informational text is provided. List of bananas is prepared.
+     * @param width is width of screen.
+     * @param height is height of screen.
+     * @param image is background image.
+     */
     EndScreen(int width, int height, Image image) {
         random = new Random();
         screenWidth = width;
@@ -63,6 +76,12 @@ class EndScreen extends Group {
         return bananaList;
     }
 
+    /**
+     * Updates the end game mode. Checks whether or not to spawn a banana.
+     * Updates Harambe and all relevant bananas, and checks if Harambe has
+     * caught a banana.
+     * @param elapsedTime is time spent updating.
+     */
     void update(double elapsedTime) {
         if (random.nextDouble() <= elapsedTime) {
             spawnBanana();
@@ -74,6 +93,9 @@ class EndScreen extends Group {
         checkBananaCatches();
     }
 
+    /**
+     * Creates a banana at a random position on top of screen.
+     */
     private void spawnBanana() {
         int xSpawn = random.nextInt(screenWidth);
         EndBanana banana = new EndBanana(xSpawn, 0);
@@ -81,6 +103,10 @@ class EndScreen extends Group {
         getChildren().add(banana);
     }
 
+    /**
+     * Checks whether Harambe has caught a banana. If he has, removes it from
+     * the screen and causes him to grow.
+     */
     private void checkBananaCatches() {
         List<EndBanana> caughtBananas = new ArrayList<EndBanana>();
         for (EndBanana banana : bananaList) {

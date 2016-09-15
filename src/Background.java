@@ -3,6 +3,10 @@ import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/**
+ * Creates background image for the game.
+ * @author Will Long
+ */
 public class Background extends Group {
     Background(Image image, double bgWidth, double bgHeight) {
         int adjustedImageWidth = (int) (image.getWidth() * (bgHeight / image.getHeight()));

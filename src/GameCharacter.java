@@ -1,6 +1,12 @@
 import javafx.geometry.Bounds;
 import javafx.scene.image.ImageView;
 
+/**
+ * Super class for all characters existing in game. Can move right and left,
+ * and can jump. Cannot move through platforms. Does not die to anything by
+ * default.
+ * @author Will Long
+ */
 class GameCharacter extends ImageView {
     protected static final double DEFAULT_SPEED = 300;
     protected static final double DEFAULT_JUMP = 700;
@@ -15,6 +21,13 @@ class GameCharacter extends ImageView {
     protected double yAccel;
     protected boolean isAlive;
 
+    /**
+     * Creates character of specified size and initializes default speed and
+     * jump height.
+     * @param x is x-position.
+     * @param y is y-position.
+     * @param size is size of character.
+     */
     GameCharacter(double x, double y, double size) {
         setX(x);
         setY(y);
@@ -30,21 +43,33 @@ class GameCharacter extends ImageView {
         return isAlive;
     }
 
+    /**
+     * Sets character to move right.
+     */
     void moveRight() {
         isMovingRight = true;
         isMovingLeft = false;
     }
 
+    /**
+     * Sets character to move left.
+     */
     void moveLeft() {
         isMovingLeft = true;
         isMovingRight = false;
     }
 
+    /**
+     * Sets character to stop moving.
+     */
     void stall() {
         isMovingLeft = false;
         isMovingRight = false;
     }
 
+    /**
+     * Sets character to jump if possible.
+     */
     void jump() {
         if (canJump) {
             yVelocity -= jumpHeight;
@@ -52,12 +77,22 @@ class GameCharacter extends ImageView {
         canJump = false;
     }
 
+    /**
+     * Update character movement and check if it died.
+     * @param level is Level to update information on.
+     * @param elapsedTime is time spent updating.
+     */
     void update(Level level, double elapsedTime) {
         updateMovementX(level, elapsedTime);
         updateMovementY(level, elapsedTime);
         updateAliveStatus(level);
     }
 
+    /**
+     * Updates character's X direction movement.
+     * @param level is Level to update information in.
+     * @param elapsedTime is time spent updating.
+     */
     void updateMovementX(Level level, double elapsedTime) {
         if (isMovingRight) {
             setX(getX() + xSpeed * elapsedTime);
@@ -81,6 +116,11 @@ class GameCharacter extends ImageView {
         }
     }
 
+    /**
+     * Updates character's Y direction movement.
+     * @param level is Level to update information in.
+     * @param elapsedTime is time spent updating.
+     */
     void updateMovementY(Level level, double elapsedTime) {
         yVelocity += FALL_ACCEL * elapsedTime;
         setY(getY() + yVelocity * elapsedTime);
@@ -95,6 +135,11 @@ class GameCharacter extends ImageView {
         }
     }
 
+    /**
+     * Updates whether player is still alive. This is used by Game to determine
+     * whether the character should be removed from screen.
+     * @param level is Level to update information in.
+     */
     void updateAliveStatus(Level level) {
         return;
     }

@@ -8,6 +8,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+/**
+ * Main game class that handles interactions between all other classes. Updates
+ * characters on screen, controls input from player, loads and removes images
+ * from the Scene.
+ * @author Will Long
+ */
 class Game {
     private static final int NUM_LEVELS = 3;
     private static final KeyCode CHEAT_KEY = KeyCode.CONTROL;
@@ -26,6 +32,12 @@ class Game {
 
     private HashSet<KeyCode> pressedKeys;
 
+    /**
+     * Creates a new game of specified size, and loads the starting screen. Sets
+     * up game to receive player input from keyboard.
+     * @param width is width of game screen.
+     * @param height is height of game screen.
+     */
     Game(int width, int height) {
         sceneWidth = width;
         sceneHeight = height;
@@ -51,6 +63,13 @@ class Game {
         return scene;
     }
 
+    /**
+     * Main game loop. Resolves options depending on whether start screen, a
+     * level, or the end game mode is currently loaded. If level is currently
+     * active, it receives player input, updates all characters, and checks
+     * whether the current level should be advanced.
+     * @param elapsedTime is time spent updating.
+     */
     public void update(double elapsedTime) {
         if (currentLevel == null) {
             if (!finishedGame) {
@@ -70,6 +89,11 @@ class Game {
         removeDeadCharacters();
     }
 
+    /**
+     * Updates position of all characters in game. Updates police to shoot if
+     * they are close to Harambe.
+     * @param elapsedTime is time spent updating.
+     */
     void updateGameCharacters(double elapsedTime) {
         if (currentLevel == null) {
             return;
@@ -93,6 +117,10 @@ class Game {
         }
     }
 
+    /**
+     * Resolves player input during start screen. Space advances to game, while
+     * H triggers help message.
+     */
     void resolveStartOptions() {
         if (pressedKeys.contains(KeyCode.SPACE)) {
             advanceLevels();
@@ -102,6 +130,10 @@ class Game {
         }
     }
 
+    /**
+     * Resolves player input in end game. W,A,D move Harambe around. Space exits
+     * the game.
+     */
     void resolveEndOptions() {
         if (pressedKeys.contains(KeyCode.SPACE)) {
             System.exit(0);
@@ -120,6 +152,10 @@ class Game {
         }
     }
 
+    /**
+     * Resolves player input during main game. If control key is pressed, cheats
+     * are activated. Otherwise, W,A,D move character and space throws a banana.
+     */
     void resolveKeyPresses() {
         if (pressedKeys.contains(CHEAT_KEY)) {
             resolveCheatCode();
@@ -142,6 +178,10 @@ class Game {
         }
     }
 
+    /**
+     * Resolves cheat codes. Numerous cheats are available when holding control
+     * key, including upgrades to Harambe, skipping levels, clearing enemies.
+     */
     void resolveCheatCode() {
         if (pressedKeys.contains(KeyCode.D)) {
             harambe.setX(harambe.getX() + 100);
@@ -186,6 +226,9 @@ class Game {
         }
     }
 
+    /**
+     * Checks if any game characters have died, and removes them if they have.
+     */
     void removeDeadCharacters() {
         if (!harambe.isAlive()) {
             skipToLevel(0);
@@ -205,6 +248,9 @@ class Game {
         currentLevel.getChildren().removeAll(deadPoliceList);
     }
 
+    /**
+     * Scrolls level according to Harambe's position.
+     */
     void scrollLevel() {
         double offset = sceneWidth * 1.0 / 3;
         if (harambe.getX() < offset) {
@@ -217,6 +263,11 @@ class Game {
         }
     }
 
+    /**
+     * Advances to the next level. If on start screen, goes to first main level.
+     * If finished last main level, advances to end game. Otherwise, advances to
+     * next main level whenever Harambe reaches end of current level.
+     */
     void advanceLevels() {
         sceneRoot.getChildren().clear();
         sceneRoot.setLayoutX(0);
@@ -241,6 +292,11 @@ class Game {
         sceneRoot.getChildren().add(harambe);
     }
 
+    /**
+     * Skips to the specified level, or to a start/end screen if a lower/higher
+     * level number is provided than is possible in game.
+     * @param levelNum is level to move to.
+     */
     void skipToLevel(int levelNum) {
         sceneRoot.getChildren().clear();
         sceneRoot.setLayoutX(0);
